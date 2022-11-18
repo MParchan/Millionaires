@@ -1,0 +1,114 @@
+﻿@model IList<Millionaires.Models.Question>
+
+<div class="text-center pt-5">
+    <div class="text-center leftdiv mx-3">
+        <p class="display-6 p-2">The $@ViewBag.Prize question:</p>
+        <hr />
+        <h4 class="p-3">@Html.DisplayFor(model => model.Last().QuestionContents)</h4>
+
+        <form method="post" asp-controller="Game" asp-action="Index">
+            <input type="hidden" name="correctAnswer" value="@Model?.Last().CorrectAnswer" />
+            @if (Model != null)
+            {
+                for (var i = 0; i < Model.Count; i++)
+                {
+                    @Html.HiddenFor(m => Model[i].QuestionId)
+                    @Html.HiddenFor(m => Model[i].QuestionContents)
+                    @Html.HiddenFor(m => Model[i].AnswerA)
+                    @Html.HiddenFor(m => Model[i].AnswerB)
+                    @Html.HiddenFor(m => Model[i].AnswerC)
+                    @Html.HiddenFor(m => Model[i].AnswerD)
+                    @Html.HiddenFor(m => Model[i].CorrectAnswer)
+                    @Html.HiddenFor(m => Model[i].DifficultyLevel)
+                }
+            }
+            <div>
+                <input id="btn" type="submit" class="btn btn-primary m-1" name="answer" value="A: @Model?.Last().AnswerA" />
+                <input id="btn" type="submit" class="btn btn-primary m-1" name="answer" value="B: @Model?.Last().AnswerB" />
+            </div>
+            <div>
+                <input id="btn" type="submit" class="btn btn-primary m-1" name="answer" value="C: @Model?.Last().AnswerC" />
+                <input id="btn" type="submit" class="btn btn-primary m-1" name="answer" value="D: @Model?.Last().AnswerD" />
+            </div>
+            <input type="hidden" name="levelId" value=@Model?.Count />
+            <button id="btn" type="submit" class="btn btn-primary m-1 w-25 mt-5" name="tookMoney" value="@ViewBag.PrizeCurrent">Take the money - $@ViewBag.PrizeCurrent</button>
+        </form>
+    </div>
+    <div class="tablediv">
+        <div class="text-center border rounded border-primary">
+        <table class ="w-100 text-center">
+            @foreach (var l in ViewBag.levelRewards)
+            {
+                
+                    @if (l.Prize == ViewBag.Prize)
+                    {
+                        <tr class="bg-warning">
+                        @if (l.Guaranteed == true)
+                        {
+                                <td class="float-start px-3 p-1"><b>@l.LevelId</b></td>
+                                <td class="float-end px-3"><b><u>@l.Prize</u></b></td>
+                        }
+                        else
+                        {
+                            <td class="float-start px-3 p-1"><b>@l.LevelId</b></td>
+                            <td class="float-end px-3"><b>@l.Prize</b></td>
+                        }
+                        </tr>
+                    }
+                    else
+                    {
+                            @if (l.Prize < ViewBag.Prize)
+                            {
+                                <tr class="bg-primary">
+                                @if (l.Guaranteed == true)
+                                {
+                                    <td class="float-start px-3 p-1 text-white"><b>@l.LevelId ◆</b></td>
+                                    <td class="float-end px-3 text-white"><b><u>@l.Prize</u></b></td>
+                                }
+                                else
+                                {
+                                    <td class="float-start px-3 p-1 text-white"><b>@l.LevelId ◆</b></td>
+                                    <td class="float-end px-3 text-white"><b>@l.Prize</b></td>
+                                }
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                @if (l.Guaranteed == true)
+                                {
+                                    <td class="float-start px-3 p-1">@l.LevelId</td>
+                                    <td class="float-end px-3"><u>@l.Prize</u></td>
+                                }
+                                else
+                                {
+                                    <td class="float-start px-3 p-1">@l.LevelId</td>
+                                    <td class="float-end px-3">@l.Prize</td>
+                                }
+                                </tr>
+                            }
+                    }
+                
+                
+            }
+        </table>
+    </div>
+    </div>
+</div>
+
+<style>
+    .leftdiv {
+        float: left;
+        width: 60%;
+        margin-left: 5%;
+    }
+
+    .tablediv {
+        float: left;
+        width: 15%;
+        min-width: 150px;
+    }
+    #btn {
+        width: 40%;
+    }
+</style>
