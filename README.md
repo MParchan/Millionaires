@@ -1,4 +1,5 @@
-# Who wants to be a Millionaire
+# Who wants to be a Millionaire?
+#### Web application based on the rules of a well-known game show "Who wants to be a Millionaire?"
 
 ## Configuration
 #### Set the appropriate ConnectionString in appsettings.json.
